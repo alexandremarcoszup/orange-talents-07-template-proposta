@@ -1,0 +1,20 @@
+version: '3'
+services:
+  db_postgres:
+    image: "postgres:10-alpine"
+    environment:
+      POSTGRES_USER: agamin
+      POSTGRES_PASSWORD: 2020
+    ports:
+      - "5432:5432"
+    volumes:
+      - /var/lib/postgresql/app/data
+  pg_admin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dono@email.com
+      PGADMIN_DEFAULT_PASSWORD: 123
+    ports:
+      - "16543:80"
+    depends_on:
+      - db_postgres
