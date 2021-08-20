@@ -35,4 +35,12 @@ public class ExceptionHandlerValidator {
         return dto;
     }
 
+    @ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(DuplicatedDocumentException.class)
+    private ErroDeRequestDTO handle(DuplicatedDocumentException exception) {
+
+
+        return new ErroDeRequestDTO(exception.getCampo(), exception.getErro());
+    }
+
 }

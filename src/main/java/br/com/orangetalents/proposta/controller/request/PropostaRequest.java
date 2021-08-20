@@ -2,12 +2,14 @@ package br.com.orangetalents.proposta.controller.request;
 
 import br.com.orangetalents.proposta.modelo.domain.Proposta;
 import br.com.orangetalents.proposta.security.validations.CPFOrCNPJ;
+import br.com.orangetalents.proposta.security.validations.UniqueDocument;
 
 import javax.validation.constraints.*;
 
 public class PropostaRequest {
 
     @NotBlank
+    @UniqueDocument(fieldName = "cpfOrCnpj", domainClass = Proposta.class)
     @CPFOrCNPJ
     private String cpfOrCnpj;
 
