@@ -1,10 +1,9 @@
 package br.com.orangetalents.proposta.modelo.domain;
 
 import br.com.orangetalents.proposta.controller.response.PropostaResponse;
+import br.com.orangetalents.proposta.modelo.enums.SolicitacaoStatus;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -26,15 +25,22 @@ public class Proposta {
     @NotBlank
     private String endereco;
 
+    @Enumerated(EnumType.STRING)
+    private SolicitacaoStatus status;
+
     @NotNull
     @PositiveOrZero
     private Integer salario;
 
-    public Proposta(String cpfOrCnpj, String email, String endereco, Integer salario) {
+    @Deprecated
+    public Proposta(){};
+
+    public Proposta(String cpfOrCnpj, String email, String endereco, Integer salario, SolicitacaoStatus status) {
         this.cpfOrCnpj = cpfOrCnpj;
         this.email = email;
         this.endereco = endereco;
         this.salario = salario;
+        this.status = status;
     }
 
     public Long getId() {
@@ -43,6 +49,10 @@ public class Proposta {
 
     public PropostaResponse toResponse() {
 
-        return new PropostaResponse(this.id, this.cpfOrCnpj,this.email, this.endereco,this.salario);
+        return new PropostaResponse(this.id, this.cpfOrCnpj,this.email, this.endereco,this.salario,this.status);
+    }
+
+    public void setStatus(SolicitacaoStatus status) {
+        this.status = status;
     }
 }

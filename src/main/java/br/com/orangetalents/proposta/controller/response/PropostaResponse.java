@@ -1,9 +1,6 @@
 package br.com.orangetalents.proposta.controller.response;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import br.com.orangetalents.proposta.modelo.enums.SolicitacaoStatus;
 
 public class PropostaResponse {
 
@@ -17,12 +14,15 @@ public class PropostaResponse {
 
     private Integer salario;
 
-    public PropostaResponse(Long id, String cpfOrCnpj, String email, String endereco, Integer salario) {
+    private SolicitacaoStatus status;
+
+    public PropostaResponse(Long id, String cpfOrCnpj, String email, String endereco, Integer salario, SolicitacaoStatus status) {
         this.id = id;
         this.cpfOrCnpj = cpfOrCnpj;
         this.email = email;
         this.endereco = endereco;
         this.salario = salario;
+        this.status = status;
     }
 
     public Long getId() {
@@ -43,5 +43,9 @@ public class PropostaResponse {
 
     public Integer getSalario() {
         return salario;
+    }
+
+    public SolicitacaoStatus getStatus() {
+        return status;
     }
 }

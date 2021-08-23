@@ -1,6 +1,7 @@
 package br.com.orangetalents.proposta.controller.request;
 
 import br.com.orangetalents.proposta.modelo.domain.Proposta;
+import br.com.orangetalents.proposta.modelo.enums.SolicitacaoStatus;
 import br.com.orangetalents.proposta.security.validations.CPFOrCNPJ;
 import br.com.orangetalents.proposta.security.validations.UniqueDocument;
 
@@ -32,6 +33,6 @@ public class PropostaRequest {
     }
 
     public Proposta toDomain() {
-        return new Proposta(this.cpfOrCnpj, this.email, this.endereco, this.salario);
+        return new Proposta(this.cpfOrCnpj, this.email, this.endereco, this.salario, SolicitacaoStatus.EM_PROCESSAMENTO);
     }
 }

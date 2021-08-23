@@ -1,13 +1,13 @@
 package br.com.orangetalents.proposta.controller;
 
+import br.com.orangetalents.proposta.controller.request.AvaliaSolicitanteRequest;
 import br.com.orangetalents.proposta.controller.request.PropostaRequest;
+import br.com.orangetalents.proposta.controller.response.PropostaResponse;
 import br.com.orangetalents.proposta.modelo.domain.Proposta;
 import br.com.orangetalents.proposta.modelo.repository.PropostaRepository;
+import br.com.orangetalents.proposta.service.AvaliacaoPropostaService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -18,17 +18,30 @@ import java.net.URI;
 public class PropostaController {
 
     private final PropostaRepository propostaRepository;
+    private final AvaliacaoPropostaService avaliacaoPropostaService;
 
-    public PropostaController(PropostaRepository propostaRepository) {
+    public PropostaController(PropostaRepository propostaRepository, AvaliacaoPropostaService avaliacaoPropostaService) {
         this.propostaRepository = propostaRepository;
+        this.avaliacaoPropostaService = avaliacaoPropostaService;
     }
 
     @PostMapping
-    public ResponseEntity<?> criaProposta(UriComponentsBuilder uriBuilder, @RequestBody @Valid PropostaRequest propostaRequest){
+    public ResponseEntity<PropostaResponse> criaProposta(UriComponentsBuilder uriBuilder, @RequestBody @Valid PropostaRequest propostaRequest){
 
         Proposta proposta = propostaRepository.save(propostaRequest.toDomain());
 
         URI uri = uriBuilder.path("proposta/{id}").buildAndExpand(proposta.getId()).toUri();
         return ResponseEntity.created(uri).body(proposta.toResponse());
+    }
+
+    @GetMapping
+    public ResponseEntity<PropostaResponse> avaliaSolicitante(@RequestBody @Valid AvaliaSolicitanteRequest avaliaSolicitanteRequest){
+
+        Proposta proposta = propostaRepository.findById(avaliaSolicitanteRequest.getIdProposta()).get();
+
+        avaliacaoPropostaService.avaliar(avaliaSolicitanteRequest, proposta);
+        propostaRepository.save(proposta);
+
+        return ResponseEntity.ok(proposta.toResponse());
     }
 }

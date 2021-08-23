@@ -5,8 +5,9 @@ services:
     environment:
       POSTGRES_USER: agamin
       POSTGRES_PASSWORD: 2020
+      POSTGRES_DB: proposta
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - /var/lib/postgresql/app/data
   pg_admin:
