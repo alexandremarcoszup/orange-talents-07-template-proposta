@@ -13,7 +13,7 @@ public @interface UniqueValue {
 
     Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default{};
+    Class<? extends Payload>[] payload() default {};
 
     String fieldName();
 

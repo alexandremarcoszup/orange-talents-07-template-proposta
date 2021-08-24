@@ -1,7 +1,7 @@
 package br.com.orangetalents.proposta.controller.request;
 
-import br.com.orangetalents.proposta.integracao.request.ConsultaAnalise;
-import br.com.orangetalents.proposta.modelo.domain.Proposta;
+import br.com.orangetalents.proposta.integracao.request.ConsultaAnaliseRequest;
+import br.com.orangetalents.proposta.domain.modelo.Proposta;
 import br.com.orangetalents.proposta.security.validations.ExistsId;
 
 import javax.validation.constraints.NotBlank;
@@ -19,14 +19,14 @@ public class AvaliaSolicitanteRequest {
     @NotNull
     private Long idProposta;
 
-    public AvaliaSolicitanteRequest(@NotBlank String documento, @NotBlank String nome,@NotNull Long idProposta) {
+    public AvaliaSolicitanteRequest(@NotBlank String documento, @NotBlank String nome, @NotNull Long idProposta) {
         this.documento = documento;
         this.nome = nome;
         this.idProposta = idProposta;
     }
 
-    public ConsultaAnalise requestToAnalise(){
-        return new ConsultaAnalise(this.documento,this.nome, this.idProposta.toString());
+    public ConsultaAnaliseRequest requestToAnalise() {
+        return new ConsultaAnaliseRequest(this.documento, this.nome, this.idProposta.toString());
     }
 
     public Long getIdProposta() {

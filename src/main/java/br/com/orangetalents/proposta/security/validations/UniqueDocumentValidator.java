@@ -29,11 +29,11 @@ public class UniqueDocumentValidator implements ConstraintValidator<UniqueDocume
 
     @Override
     public boolean isValid(String document, ConstraintValidatorContext constraintValidatorContext) {
-        Query query = entityManager.createQuery("SELECT 1 FROM "+Klass.getName()+" where "+domainAttribute+"=:value");
+        Query query = entityManager.createQuery("SELECT 1 FROM " + Klass.getName() + " where " + domainAttribute + "=:value");
         query.setParameter("value", document);
         List<?> list = query.getResultList();
         if (list.size() >= 1)
-            throw new DuplicatedDocumentException(domainAttribute, "Foi encontrado mais de uma + "+Klass.getName()+" com o documento: "+document);
+            throw new DuplicatedDocumentException(domainAttribute, "Foi encontrado mais de uma + " + Klass.getName() + " com o documento: " + document);
 
         return true;
     }

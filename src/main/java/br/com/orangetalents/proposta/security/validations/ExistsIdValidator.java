@@ -27,11 +27,11 @@ public class ExistsIdValidator implements ConstraintValidator<ExistsId, Object> 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext constraintValidatorContext) {
 
-        Query query = entityManager.createQuery("SELECT 1 FROM "+Klass.getName()+" where "+domainAttribute+"=:value");
+        Query query = entityManager.createQuery("SELECT 1 FROM " + Klass.getName() + " where " + domainAttribute + "=:value");
         query.setParameter("value", value);
         List<?> list = query.getResultList();
-            if (!(list.size() == 1))
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi encontrado nenhum+ "+Klass.getName()+" com o id: "+value);
+        if (!(list.size() == 1))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi encontrado nenhum+ " + Klass.getName() + " com o id: " + value);
 
         return true;
     }

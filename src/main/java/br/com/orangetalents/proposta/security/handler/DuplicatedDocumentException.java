@@ -1,6 +1,6 @@
 package br.com.orangetalents.proposta.security.handler;
 
-public class DuplicatedDocumentException extends RuntimeException{
+public class DuplicatedDocumentException extends RuntimeException {
 
     private String campo;
 

@@ -1,7 +1,7 @@
-package br.com.orangetalents.proposta.modelo.domain;
+package br.com.orangetalents.proposta.domain.modelo;
 
 import br.com.orangetalents.proposta.controller.response.PropostaResponse;
-import br.com.orangetalents.proposta.modelo.enums.SolicitacaoStatus;
+import br.com.orangetalents.proposta.domain.enums.SolicitacaoStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -13,7 +13,7 @@ import javax.validation.constraints.PositiveOrZero;
 public class Proposta {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String cpfOrCnpj;
@@ -21,6 +21,9 @@ public class Proposta {
     @Email
     @NotBlank
     private String email;
+
+    @NotBlank
+    private String nome;
 
     @NotBlank
     private String endereco;
@@ -32,27 +35,44 @@ public class Proposta {
     @PositiveOrZero
     private Integer salario;
 
-    @Deprecated
-    public Proposta(){};
+    @OneToOne(cascade = CascadeType.MERGE)
+    private Cartao cartao;
 
-    public Proposta(String cpfOrCnpj, String email, String endereco, Integer salario, SolicitacaoStatus status) {
+    @Deprecated
+    public Proposta() {
+    }
+
+    public Proposta(String cpfOrCnpj, String email, String nome, String endereco, Integer salario, SolicitacaoStatus status) {
         this.cpfOrCnpj = cpfOrCnpj;
         this.email = email;
+        this.nome = nome;
         this.endereco = endereco;
         this.salario = salario;
         this.status = status;
+    }
+
+    public PropostaResponse toResponse() {
+
+        return new PropostaResponse(this.id, this.cpfOrCnpj, this.email, this.nome, this.endereco, this.salario, this.status);
+    }
+
+    public void setStatus(SolicitacaoStatus status) {
+        this.status = status;
+    }
+
+    public void setCartao(Cartao cartao) {
+        this.cartao = cartao;
     }
 
     public Long getId() {
         return id;
     }
 
-    public PropostaResponse toResponse() {
-
-        return new PropostaResponse(this.id, this.cpfOrCnpj,this.email, this.endereco,this.salario,this.status);
+    public String getCpfOrCnpj() {
+        return cpfOrCnpj;
     }
 
-    public void setStatus(SolicitacaoStatus status) {
-        this.status = status;
+    public String getNome() {
+        return nome;
     }
 }

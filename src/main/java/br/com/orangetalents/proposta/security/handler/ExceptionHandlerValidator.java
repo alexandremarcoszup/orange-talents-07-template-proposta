@@ -9,7 +9,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +40,13 @@ public class ExceptionHandlerValidator {
 
 
         return new ErroDeRequestDTO(exception.getCampo(), exception.getErro());
+    }
+
+    @ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
+    @ExceptionHandler(AssociationCardException.class)
+    private ErroDeIntegracaoDTO handle(AssociationCardException exception) {
+
+        return new ErroDeIntegracaoDTO(exception.getMessage(), exception.getIdProposta());
     }
 
 }

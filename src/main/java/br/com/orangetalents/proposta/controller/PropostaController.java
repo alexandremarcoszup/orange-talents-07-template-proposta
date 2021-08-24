@@ -3,8 +3,8 @@ package br.com.orangetalents.proposta.controller;
 import br.com.orangetalents.proposta.controller.request.AvaliaSolicitanteRequest;
 import br.com.orangetalents.proposta.controller.request.PropostaRequest;
 import br.com.orangetalents.proposta.controller.response.PropostaResponse;
-import br.com.orangetalents.proposta.modelo.domain.Proposta;
-import br.com.orangetalents.proposta.modelo.repository.PropostaRepository;
+import br.com.orangetalents.proposta.domain.modelo.Proposta;
+import br.com.orangetalents.proposta.domain.repository.PropostaRepository;
 import br.com.orangetalents.proposta.service.AvaliacaoPropostaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +26,7 @@ public class PropostaController {
     }
 
     @PostMapping
-    public ResponseEntity<PropostaResponse> criaProposta(UriComponentsBuilder uriBuilder, @RequestBody @Valid PropostaRequest propostaRequest){
+    public ResponseEntity<PropostaResponse> criaProposta(UriComponentsBuilder uriBuilder, @RequestBody @Valid PropostaRequest propostaRequest) {
 
         Proposta proposta = propostaRepository.save(propostaRequest.toDomain());
 
@@ -35,7 +35,7 @@ public class PropostaController {
     }
 
     @GetMapping
-    public ResponseEntity<PropostaResponse> avaliaSolicitante(@RequestBody @Valid AvaliaSolicitanteRequest avaliaSolicitanteRequest){
+    public ResponseEntity<PropostaResponse> avaliaSolicitante(@RequestBody @Valid AvaliaSolicitanteRequest avaliaSolicitanteRequest) {
 
         Proposta proposta = propostaRepository.findById(avaliaSolicitanteRequest.getIdProposta()).get();
 

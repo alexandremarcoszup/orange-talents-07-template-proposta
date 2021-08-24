@@ -1,7 +1,7 @@
 package br.com.orangetalents.proposta.controller.request;
 
-import br.com.orangetalents.proposta.modelo.domain.Proposta;
-import br.com.orangetalents.proposta.modelo.enums.SolicitacaoStatus;
+import br.com.orangetalents.proposta.domain.modelo.Proposta;
+import br.com.orangetalents.proposta.domain.enums.SolicitacaoStatus;
 import br.com.orangetalents.proposta.security.validations.CPFOrCNPJ;
 import br.com.orangetalents.proposta.security.validations.UniqueDocument;
 
@@ -19,20 +19,24 @@ public class PropostaRequest {
     private String email;
 
     @NotBlank
+    private String nome;
+
+    @NotBlank
     private String endereco;
 
     @NotNull
     @PositiveOrZero
     private Integer salario;
 
-    public PropostaRequest(String cpfOrCnpj, String email, String endereco, Integer salario) {
+    public PropostaRequest(String cpfOrCnpj, String email, String nome, String endereco, Integer salario) {
         this.cpfOrCnpj = cpfOrCnpj;
         this.email = email;
+        this.nome = nome;
         this.endereco = endereco;
         this.salario = salario;
     }
 
     public Proposta toDomain() {
-        return new Proposta(this.cpfOrCnpj, this.email, this.endereco, this.salario, SolicitacaoStatus.EM_PROCESSAMENTO);
+        return new Proposta(this.cpfOrCnpj, this.email, this.nome, this.endereco, this.salario, SolicitacaoStatus.EM_PROCESSAMENTO);
     }
 }
