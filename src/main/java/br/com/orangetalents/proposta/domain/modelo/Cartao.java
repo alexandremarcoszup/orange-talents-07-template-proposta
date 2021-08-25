@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,16 +20,16 @@ public class Cartao {
     private String titular;
 
     @Embedded
-    private List<Bloqueio> bloqueios;
+    private List<Bloqueio> bloqueios = new ArrayList<>();
 
     @Embedded
-    private List<Aviso> avisos;
+    private List<Aviso> avisos = new ArrayList<>();
 
     @Embedded
-    private List<Carteira> carteiras;
+    private List<Carteira> carteiras = new ArrayList<>();
 
     @Embedded
-    private List<Parcela> parcelaRequests;
+    private List<Parcela> parcelaRequests = new ArrayList<>();
 
     private Integer limite;
 
@@ -46,8 +47,7 @@ public class Cartao {
     }
 
     public Cartao(String id, LocalDateTime emissao, String titular, List<Bloqueio> bloqueios, List<Aviso> avisos,
-                  List<Carteira> carteiras, List<Parcela> parcelaRequests, Integer limite, Renegociacao renegociacao,
-                  Vencimento vencimento, Proposta proposta) {
+                  List<Carteira> carteiras, List<Parcela> parcelaRequests, Integer limite, Proposta proposta) {
         this.id = id;
         this.emissao = emissao;
         this.titular = titular;
@@ -56,8 +56,15 @@ public class Cartao {
         this.carteiras = carteiras;
         this.parcelaRequests = parcelaRequests;
         this.limite = limite;
-        this.renegociacao = renegociacao;
-        this.vencimento = vencimento;
         this.proposta = proposta;
+    }
+
+
+    public void setRenegociacao(Renegociacao renegociacao) {
+        this.renegociacao = renegociacao;
+    }
+
+    public void setVencimento(Vencimento vencimento) {
+        this.vencimento = vencimento;
     }
 }

@@ -25,4 +25,6 @@ public class RenegociacaoResponseClient {
     public Renegociacao responseClientToDomain() {
         return new Renegociacao(this.id, this.quantidade, this.valor, this.dataDeCriacao);
     }
+
+
 }
