@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -47,6 +48,12 @@ public class ExceptionHandlerValidator {
     private ErroDeIntegracaoDTO handle(AssociationCardException exception) {
 
         return new ErroDeIntegracaoDTO(exception.getMessage(), exception.getIdProposta());
+    }
+
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    @ExceptionHandler(EntityNotFound.class)
+    private ResponseEntity<ErroDeBuscaDTO> handle(EntityNotFound exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErroDeBuscaDTO(exception.getClassName(), exception.getMessage()));
     }
 
 }

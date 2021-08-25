@@ -56,6 +56,6 @@ public class PropostaController {
 
         Optional<Proposta> proposta = propostaRepository.findById(id);
 
-        return proposta.orElseThrow(() -> new EntityNotFound("Entidade não encontrada de id: " + id + "não achado", Proposta.class.getName()));
+        return proposta.orElseThrow(() -> new EntityNotFound("Entidade não encontrada de id: " + id + " não achado", Proposta.class.getName()));
     }
 }
