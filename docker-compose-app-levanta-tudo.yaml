@@ -1,0 +1,32 @@
+version: '3'
+services:
+  db_postgres:
+    image: "postgres:10-alpine"
+    environment:
+      POSTGRES_USER: agamin
+      POSTGRES_PASSWORD: 2020
+      POSTGRES_DB: proposta
+    ports:
+      - "5434:5432"
+    volumes:
+      - /var/lib/postgresql/app/data
+  pg_admin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dono@email.com
+      PGADMIN_DEFAULT_PASSWORD: 123
+    ports:
+      - "16544:80"
+    depends_on:
+      - db_postgres
+  proposta:
+    image: agaminapp
+    ports:
+      - 8081:8080
+    environment:
+      DATABASE_URL: "jdbc:postgresql://db_postgres:5432/proposta"
+      DATABASE_USERNAME: agamin
+      DATABASE_PASSWORD: 2020
+      DELAY_ATRIBUICAO_CARTAO: 1500
+    depends_on:
+      - db_postgres
