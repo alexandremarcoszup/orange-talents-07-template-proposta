@@ -1,11 +1,14 @@
 package br.com.orangetalents.proposta.domain.modelo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -42,6 +45,9 @@ public class Cartao {
     @OneToOne
     private Proposta proposta;
 
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+    private Set<Biometria> biometrias = new HashSet<>();
+
     @Deprecated
     public Cartao() {
     }
@@ -66,5 +72,14 @@ public class Cartao {
 
     public void setVencimento(Vencimento vencimento) {
         this.vencimento = vencimento;
+    }
+
+    public void addBiometria(Biometria biometria){
+        Assert.isTrue(!biometrias.contains(biometria), "Algo de errado não está certo, pois não foi inserido a biometria.");
+
+        if (biometria != null)
+            this.biometrias.add(biometria);
+
+
     }
 }
