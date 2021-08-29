@@ -2,15 +2,14 @@ package br.com.orangetalents.proposta.integracao.response;
 
 import br.com.orangetalents.proposta.domain.modelo.Cartao;
 import br.com.orangetalents.proposta.domain.modelo.Proposta;
-import br.com.orangetalents.proposta.domain.repository.PropostaRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static br.com.orangetalents.proposta.domain.enums.CartaoStatus.ATIVO;
 import static br.com.orangetalents.proposta.domain.enums.SolicitacaoStatus.FINALIZADO;
-import static java.lang.Long.parseLong;
 
 public class CartaoResponseClient {
 
@@ -55,21 +54,21 @@ public class CartaoResponseClient {
         this.idProposta = idProposta;
     }
 
-    public Cartao responseClientToDomain(PropostaRepository propostaRepository) {
+    public Cartao responseClientToDomain(Proposta proposta) {
 
-        Proposta proposta = propostaRepository.findById(parseLong(this.idProposta)).get();
 
         Cartao cartao =  new Cartao(this.idCartao, this.emissao, this.titular, this.bloqueios.stream().map(BloqueioResponseClient::responseClientToDomain).collect(Collectors.toList()),
                 this.avisos.stream().map(AvisoResponseClient::responseClientToDomain).collect(Collectors.toList()),
                 this.carteiras.stream().map(CarteiraResponseClient::responseClientToDomain).collect(Collectors.toList()),
                 this.parcelas.stream().map(ParcelaResponseClient::responseClientToDomain).collect(Collectors.toList()),
-                this.limite, proposta);
+                this.limite, proposta, ATIVO);
 
         if (renegociacao != null)
             cartao.setRenegociacao(this.renegociacao.responseClientToDomain());
 
         if (vencimento != null)
             cartao.setVencimento(this.vencimento.responseClientToDomain());
+
 
         proposta.setCartao(cartao);
         proposta.setStatus(FINALIZADO);

@@ -1,13 +1,13 @@
 package br.com.orangetalents.proposta.domain.modelo;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Embeddable
+@Entity
 public class Carteira {
 
-    @Column(name = "id_carteira")
+    @Id
+    @Column(insertable = true, updatable = true, nullable = false)
     private String id;
 
     private String email;
@@ -15,6 +15,9 @@ public class Carteira {
     private LocalDateTime associadaEm;
 
     private String emissor;
+
+    @ManyToOne
+    private Cartao cartao;
 
     @Deprecated
     public Carteira() {

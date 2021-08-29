@@ -1,12 +1,12 @@
 package br.com.orangetalents.proposta.security.handler;
 
-public class DuplicatedDocumentException extends RuntimeException {
+public class EntityException extends RuntimeException {
 
     private String campo;
 
     private String erro;
 
-    public DuplicatedDocumentException(String campo, String erro) {
+    public EntityException(String campo, String erro) {
         this.campo = campo;
         this.erro = erro;
     }

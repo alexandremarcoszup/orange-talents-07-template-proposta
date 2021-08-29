@@ -1,19 +1,21 @@
 package br.com.orangetalents.proposta.domain.modelo;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Embeddable
+@Entity
 public class Parcela {
 
-    @Column(name = "id_parcela")
-
+    @Id
+    @Column(insertable = true, updatable = true, nullable = false)
     private String id;
 
     private Integer quantidade;
 
     private BigDecimal valor;
+
+    @ManyToOne
+    private Cartao cartao;
 
     @Deprecated
     public Parcela() {

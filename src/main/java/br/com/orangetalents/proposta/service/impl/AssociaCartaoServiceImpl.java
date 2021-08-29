@@ -42,7 +42,7 @@ public class AssociaCartaoServiceImpl implements AssociaCartaoService {
                     CartaoResponseClient resposta = associaNovoCartaoWebClient.associaCartao(request);
                     log.log(Level.INFO,"Cartão pego");
 
-                    resposta.responseClientToDomain(propostaRepository);
+                    resposta.responseClientToDomain(proposta);
 
                     propostaRepository.save(proposta);
                     log.log(Level.INFO,"Cartão salvo");

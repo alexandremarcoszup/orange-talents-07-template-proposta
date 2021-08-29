@@ -1,5 +1,8 @@
 package br.com.orangetalents.proposta.domain.modelo;
 
+import br.com.orangetalents.proposta.controller.response.CartaoBloqueadoResponse;
+import br.com.orangetalents.proposta.domain.enums.CartaoStatus;
+import br.com.orangetalents.proposta.security.handler.EntityException;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.util.Assert;
 
@@ -9,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static br.com.orangetalents.proposta.domain.enums.CartaoStatus.BLOQUEADO;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -22,17 +27,17 @@ public class Cartao {
 
     private String titular;
 
-    @Embedded
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
     private List<Bloqueio> bloqueios = new ArrayList<>();
 
-    @Embedded
-    private List<Aviso> avisos = new ArrayList<>();
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+    private List<Aviso> avisos= new ArrayList<>();
 
-    @Embedded
-    private List<Carteira> carteiras = new ArrayList<>();
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+    private List<Carteira> carteiras= new ArrayList<>();
 
-    @Embedded
-    private List<Parcela> parcelaRequests = new ArrayList<>();
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+    private List<Parcela> parcelaRequests= new ArrayList<>();
 
     private Integer limite;
 
@@ -48,14 +53,17 @@ public class Cartao {
     @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
     private Set<Biometria> biometrias = new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
+    private CartaoStatus status;
+
     @Deprecated
     public Cartao() {
     }
 
     public Cartao(String id, LocalDateTime emissao, String titular, List<Bloqueio> bloqueios, List<Aviso> avisos,
-                  List<Carteira> carteiras, List<Parcela> parcelaRequests, Integer limite, Proposta proposta) {
+                  List<Carteira> carteiras, List<Parcela> parcelaRequests, Integer limite, Proposta proposta, CartaoStatus status) {
         this.id = id;
-        this.emissao = emissao;
+        this.emissao = LocalDateTime.now();
         this.titular = titular;
         this.bloqueios = bloqueios;
         this.avisos = avisos;
@@ -63,6 +71,7 @@ public class Cartao {
         this.parcelaRequests = parcelaRequests;
         this.limite = limite;
         this.proposta = proposta;
+        this.status = status;
     }
 
 
@@ -74,12 +83,22 @@ public class Cartao {
         this.vencimento = vencimento;
     }
 
-    public void addBiometria(Biometria biometria){
+
+    public void addBiometria(Biometria biometria) {
         Assert.isTrue(!biometrias.contains(biometria), "Algo de errado não está certo, pois não foi inserido a biometria.");
 
         if (biometria != null)
             this.biometrias.add(biometria);
 
+    }
+    public void bloquear(String userAgent, String ipaddress){
+        if(this.status == BLOQUEADO)
+            throw new EntityException(this.status.toString(), "Cartão já está bloqueado");
+        this.status = BLOQUEADO;
+        bloqueios.add(new Bloqueio(userAgent, ipaddress, false, this));
+    }
 
+    public CartaoBloqueadoResponse domainToBloqueadoResponse(){
+        return new CartaoBloqueadoResponse(this.id, this.emissao, this.titular, this.status);
     }
 }
