@@ -41,7 +41,6 @@ public class AssociaCartaoServiceImpl implements AssociaCartaoService {
                 try{
                     CartaoResponseClient resposta = cartaoWebClient.recuperaCartao(request.getIdProposta());
                     log.log(Level.INFO,"Cartão pego");
-
                     resposta.responseClientToDomain(proposta);
 
                     propostaRepository.save(proposta);
