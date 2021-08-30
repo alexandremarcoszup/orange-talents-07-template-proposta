@@ -75,15 +75,6 @@ public class Cartao {
     }
 
 
-    public void setRenegociacao(Renegociacao renegociacao) {
-        this.renegociacao = renegociacao;
-    }
-
-    public void setVencimento(Vencimento vencimento) {
-        this.vencimento = vencimento;
-    }
-
-
     public void addBiometria(Biometria biometria) {
         Assert.isTrue(!biometrias.contains(biometria), "Algo de errado não está certo, pois não foi inserido a biometria.");
 
@@ -91,6 +82,7 @@ public class Cartao {
             this.biometrias.add(biometria);
 
     }
+
     public void bloquear(String userAgent, String ipaddress){
         if(this.status == BLOQUEADO)
             throw new EntityException(this.status.toString(), "Cartão já está bloqueado");
@@ -100,5 +92,21 @@ public class Cartao {
 
     public CartaoBloqueadoResponse domainToBloqueadoResponse(){
         return new CartaoBloqueadoResponse(this.id, this.emissao, this.titular, this.status);
+    }
+
+    public void setRenegociacao(Renegociacao renegociacao) {
+        this.renegociacao = renegociacao;
+    }
+
+    public void setVencimento(Vencimento vencimento) {
+        this.vencimento = vencimento;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Proposta getProposta() {
+        return proposta;
     }
 }

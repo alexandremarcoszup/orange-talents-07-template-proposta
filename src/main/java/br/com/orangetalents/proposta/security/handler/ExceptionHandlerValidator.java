@@ -43,10 +43,10 @@ public class ExceptionHandlerValidator {
     }
 
     @ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
-    @ExceptionHandler(AssociationCardException.class)
-    private ErroDeIntegracaoDTO handle(AssociationCardException exception) {
+    @ExceptionHandler(IntegracaoException.class)
+    private ErroDeIntegracaoDTO handle(IntegracaoException exception) {
 
-        return new ErroDeIntegracaoDTO(exception.getMessage(), exception.getIdProposta());
+        return new ErroDeIntegracaoDTO(exception.getMessage(), exception.getAtribute());
     }
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND)

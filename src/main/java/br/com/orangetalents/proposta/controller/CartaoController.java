@@ -5,6 +5,7 @@ import br.com.orangetalents.proposta.domain.modelo.Biometria;
 import br.com.orangetalents.proposta.domain.modelo.Cartao;
 import br.com.orangetalents.proposta.domain.repository.CartaoRepository;
 import br.com.orangetalents.proposta.security.handler.EntityNotFound;
+import br.com.orangetalents.proposta.service.BloqueiaCartaoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -19,11 +20,13 @@ import java.util.logging.Logger;
 public class CartaoController {
 
     private final CartaoRepository cartaoRepository;
+    private final BloqueiaCartaoService bloqueiaCartaoService;
 
     static Logger log = Logger.getLogger("Controller de biometria");
 
-    public CartaoController(CartaoRepository cartaoRepository) {
+    public CartaoController(CartaoRepository cartaoRepository, BloqueiaCartaoService bloqueiaCartaoService) {
         this.cartaoRepository = cartaoRepository;
+        this.bloqueiaCartaoService = bloqueiaCartaoService;
     }
 
     @PostMapping("/{id}")
@@ -50,8 +53,10 @@ public class CartaoController {
                                                                   @PathVariable("id") String idCartao) {
 
         Cartao cartao = findCartaoBydId(idCartao);
-        cartao.bloquear(userAgent, ipaddress);
+
+        bloqueiaCartaoService.bloqueiaCartao(cartao, userAgent, ipaddress);
         cartaoRepository.save(cartao);
+
         return ResponseEntity.ok(cartao.domainToBloqueadoResponse());
     }
 

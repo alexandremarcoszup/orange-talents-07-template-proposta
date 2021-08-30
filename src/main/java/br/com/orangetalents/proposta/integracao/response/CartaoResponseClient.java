@@ -14,7 +14,7 @@ import static br.com.orangetalents.proposta.domain.enums.SolicitacaoStatus.FINAL
 public class CartaoResponseClient {
 
 
-    private String idCartao;
+    private String id;
 
     private LocalDateTime emissao;
 
@@ -36,12 +36,12 @@ public class CartaoResponseClient {
 
     private String idProposta;
 
-    public CartaoResponseClient(String idCartao, LocalDateTime emissao, String titular, List<BloqueioResponseClient> bloqueios,
+    public CartaoResponseClient(String id, LocalDateTime emissao, String titular, List<BloqueioResponseClient> bloqueios,
                                 List<AvisoResponseClient> avisos, List<CarteiraResponseClient> carteiras, List<ParcelaResponseClient> parcelas,
                                 Integer limite, RenegociacaoResponseClient renegociacao, VencimentoResponseClient vencimento, String idProposta) {
-        this.idCartao = idCartao;
-        if (idCartao == null)
-            this.idCartao = UUID.randomUUID().toString();
+        this.id = id;
+        if (id == null)
+            this.id = UUID.randomUUID().toString();
         this.emissao = emissao;
         this.titular = titular;
         this.bloqueios = bloqueios;
@@ -57,7 +57,7 @@ public class CartaoResponseClient {
     public Cartao responseClientToDomain(Proposta proposta) {
 
 
-        Cartao cartao =  new Cartao(this.idCartao, this.emissao, this.titular, this.bloqueios.stream().map(BloqueioResponseClient::responseClientToDomain).collect(Collectors.toList()),
+        Cartao cartao =  new Cartao(this.id, this.emissao, this.titular, this.bloqueios.stream().map(BloqueioResponseClient::responseClientToDomain).collect(Collectors.toList()),
                 this.avisos.stream().map(AvisoResponseClient::responseClientToDomain).collect(Collectors.toList()),
                 this.carteiras.stream().map(CarteiraResponseClient::responseClientToDomain).collect(Collectors.toList()),
                 this.parcelas.stream().map(ParcelaResponseClient::responseClientToDomain).collect(Collectors.toList()),
@@ -76,5 +76,7 @@ public class CartaoResponseClient {
         return cartao;
     }
 
-
+    public String getId() {
+        return id;
+    }
 }
