@@ -90,6 +90,10 @@ public class Cartao {
         bloqueios.add(new Bloqueio(userAgent, ipaddress, false, this));
     }
 
+    public void adicionaAviso(Aviso aviso){
+        avisos.add(aviso);
+    }
+
     public CartaoBloqueadoResponse domainToBloqueadoResponse(){
         return new CartaoBloqueadoResponse(this.id, this.emissao, this.titular, this.status);
     }

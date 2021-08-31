@@ -1,15 +1,20 @@
 package br.com.orangetalents.proposta.controller;
 
+import br.com.orangetalents.proposta.controller.request.AvisoViagemRequest;
+import br.com.orangetalents.proposta.controller.response.AvisoResponse;
 import br.com.orangetalents.proposta.controller.response.CartaoBloqueadoResponse;
+import br.com.orangetalents.proposta.domain.modelo.Aviso;
 import br.com.orangetalents.proposta.domain.modelo.Biometria;
 import br.com.orangetalents.proposta.domain.modelo.Cartao;
 import br.com.orangetalents.proposta.domain.repository.CartaoRepository;
 import br.com.orangetalents.proposta.security.handler.EntityNotFound;
+import br.com.orangetalents.proposta.service.AvisoViagemService;
 import br.com.orangetalents.proposta.service.BloqueiaCartaoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.Base64;
 import java.util.logging.Level;
@@ -21,12 +26,14 @@ public class CartaoController {
 
     private final CartaoRepository cartaoRepository;
     private final BloqueiaCartaoService bloqueiaCartaoService;
+    private final AvisoViagemService avisoViagemService;
 
     static Logger log = Logger.getLogger("Controller de biometria");
 
-    public CartaoController(CartaoRepository cartaoRepository, BloqueiaCartaoService bloqueiaCartaoService) {
+    public CartaoController(CartaoRepository cartaoRepository, BloqueiaCartaoService bloqueiaCartaoService, AvisoViagemService avisoViagemService) {
         this.cartaoRepository = cartaoRepository;
         this.bloqueiaCartaoService = bloqueiaCartaoService;
+        this.avisoViagemService = avisoViagemService;
     }
 
     @PostMapping("/{id}")
@@ -58,6 +65,19 @@ public class CartaoController {
         cartaoRepository.save(cartao);
 
         return ResponseEntity.ok(cartao.domainToBloqueadoResponse());
+    }
+
+    @PostMapping("/aviso/{id}")
+    public ResponseEntity<AvisoResponse> postaAvisoDeviagem(@RequestHeader("User-Agent") String userAgent,
+                                                       @RequestHeader("ipaddress") String ipaddress,
+                                                       @PathVariable("id") String idCartao,
+                                                       @RequestBody @Valid AvisoViagemRequest avisoViagemRequest) {
+
+        Cartao cartao = findCartaoBydId(idCartao);
+        Aviso aviso = avisoViagemService.criarAvisoDeViagem(cartao, avisoViagemRequest);
+        cartaoRepository.save(cartao);
+
+        return ResponseEntity.ok(aviso.domainToResponse());
     }
 
     private Cartao findCartaoBydId(String idCartao) {
