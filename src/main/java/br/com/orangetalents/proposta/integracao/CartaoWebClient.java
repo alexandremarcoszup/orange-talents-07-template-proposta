@@ -1,7 +1,9 @@
 package br.com.orangetalents.proposta.integracao;
 
+import br.com.orangetalents.proposta.integracao.request.AssociaCarteiraRequest;
 import br.com.orangetalents.proposta.integracao.request.AvisoViagemCartaoRequest;
 import br.com.orangetalents.proposta.integracao.request.BloqueioCartaoRequest;
+import br.com.orangetalents.proposta.integracao.response.AssociaCarteiraResponse;
 import br.com.orangetalents.proposta.integracao.response.AvisoViagemCartaoResponse;
 import br.com.orangetalents.proposta.integracao.response.CartaoBloqueioResponseClient;
 import br.com.orangetalents.proposta.integracao.response.CartaoResponseClient;
@@ -23,5 +25,7 @@ public interface CartaoWebClient {
     @PostMapping(value = "/{id}/avisos", consumes = MediaType.APPLICATION_JSON_VALUE)
     AvisoViagemCartaoResponse avisoViagemCartao(@PathVariable("id") String idCartao, @RequestBody AvisoViagemCartaoRequest avisoViagemCartaoRequest);
 
+    @PostMapping(value = "/{id}/carteiras")
+    AssociaCarteiraResponse associarCarteira(@PathVariable("id") String idCartao, @RequestBody AssociaCarteiraRequest associaCarteiraRequest);
 
 }

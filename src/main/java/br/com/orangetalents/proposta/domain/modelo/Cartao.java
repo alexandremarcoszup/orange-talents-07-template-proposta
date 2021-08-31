@@ -94,6 +94,10 @@ public class Cartao {
         avisos.add(aviso);
     }
 
+    public void adicionaCarteira(Carteira carteira){
+        carteiras.add(carteira);
+    }
+
     public CartaoBloqueadoResponse domainToBloqueadoResponse(){
         return new CartaoBloqueadoResponse(this.id, this.emissao, this.titular, this.status);
     }

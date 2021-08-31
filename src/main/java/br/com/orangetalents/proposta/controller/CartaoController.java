@@ -1,13 +1,16 @@
 package br.com.orangetalents.proposta.controller;
 
 import br.com.orangetalents.proposta.controller.request.AvisoViagemRequest;
+import br.com.orangetalents.proposta.controller.request.CarteiraRequest;
 import br.com.orangetalents.proposta.controller.response.AvisoResponse;
 import br.com.orangetalents.proposta.controller.response.CartaoBloqueadoResponse;
 import br.com.orangetalents.proposta.domain.modelo.Aviso;
 import br.com.orangetalents.proposta.domain.modelo.Biometria;
 import br.com.orangetalents.proposta.domain.modelo.Cartao;
+import br.com.orangetalents.proposta.domain.modelo.Carteira;
 import br.com.orangetalents.proposta.domain.repository.CartaoRepository;
 import br.com.orangetalents.proposta.security.handler.EntityNotFound;
+import br.com.orangetalents.proposta.service.AssociaCarteiraService;
 import br.com.orangetalents.proposta.service.AvisoViagemService;
 import br.com.orangetalents.proposta.service.BloqueiaCartaoService;
 import br.com.orangetalents.proposta.service.impl.BloqueiaCartaoServiceImpl;
@@ -28,14 +31,16 @@ public class CartaoController {
     private final CartaoRepository cartaoRepository;
     private final BloqueiaCartaoService bloqueiaCartaoService;
     private final AvisoViagemService avisoViagemService;
+    private final AssociaCarteiraService associaCarteiraService;
 
     public final Logger log = LoggerFactory.getLogger(BloqueiaCartaoServiceImpl.class);
 
 
-    public CartaoController(CartaoRepository cartaoRepository, BloqueiaCartaoService bloqueiaCartaoService, AvisoViagemService avisoViagemService) {
+    public CartaoController(CartaoRepository cartaoRepository, BloqueiaCartaoService bloqueiaCartaoService, AvisoViagemService avisoViagemService, AssociaCarteiraService associaCarteiraService) {
         this.cartaoRepository = cartaoRepository;
         this.bloqueiaCartaoService = bloqueiaCartaoService;
         this.avisoViagemService = avisoViagemService;
+        this.associaCarteiraService = associaCarteiraService;
     }
 
     @PostMapping("/{id}")
@@ -80,6 +85,19 @@ public class CartaoController {
         cartaoRepository.save(cartao);
 
         return ResponseEntity.ok(aviso.domainToResponse());
+    }
+
+    @PostMapping("/carteira/{id}")
+    public ResponseEntity<?> associaCarteira(UriComponentsBuilder uriComponentsBuilder,
+                                             @RequestBody CarteiraRequest carteiraRequest,
+                                             @PathVariable("id") String idCartao){
+
+        Cartao cartao = findCartaoBydId(idCartao);
+        Carteira carteira = associaCarteiraService.associaCarteira(cartao, carteiraRequest);
+        cartaoRepository.save(cartao);
+        URI uri = uriComponentsBuilder.buildAndExpand().toUri();
+
+        return ResponseEntity.created(uri).body(carteira.domainToResponse());
     }
 
     private Cartao findCartaoBydId(String idCartao) {

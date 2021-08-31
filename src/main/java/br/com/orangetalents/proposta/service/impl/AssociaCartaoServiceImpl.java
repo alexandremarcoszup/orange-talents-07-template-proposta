@@ -10,6 +10,7 @@ import br.com.orangetalents.proposta.service.AssociaCartaoService;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,8 @@ public class AssociaCartaoServiceImpl implements AssociaCartaoService {
                     propostaRepository.save(proposta);
                     log.info("Cartão salvo");
                 }catch (FeignException e){
+                    if (e.status() == HttpStatus.UNPROCESSABLE_ENTITY.value())
+                        log.error("Partao ja associado a prosta.");
                     log.error("Erro com o cliente Feign.");
                     throw new IntegracaoException("Erro de associacao de cartão.", request.getIdProposta());
                 }

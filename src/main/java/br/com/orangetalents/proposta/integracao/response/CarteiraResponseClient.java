@@ -1,5 +1,6 @@
 package br.com.orangetalents.proposta.integracao.response;
 
+import br.com.orangetalents.proposta.domain.enums.TipoCarteira;
 import br.com.orangetalents.proposta.domain.modelo.Carteira;
 
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ public class CarteiraResponseClient {
     }
 
     public Carteira responseClientToDomain() {
-        return new Carteira(this.id, this.email, this.associadaEm, this.emissor);
+        return new Carteira(this.id, this.email, TipoCarteira.valueOf(this.emissor));
     }
+
 }
