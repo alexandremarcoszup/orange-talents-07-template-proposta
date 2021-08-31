@@ -7,10 +7,9 @@ import br.com.orangetalents.proposta.integracao.response.CartaoBloqueioResponseC
 import br.com.orangetalents.proposta.security.handler.IntegracaoException;
 import br.com.orangetalents.proposta.service.BloqueiaCartaoService;
 import feign.FeignException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static br.com.orangetalents.proposta.domain.enums.CartaoStatus.BLOQUEADO;
 
@@ -18,7 +17,7 @@ import static br.com.orangetalents.proposta.domain.enums.CartaoStatus.BLOQUEADO;
 public class BloqueiaCartaoServiceImpl implements BloqueiaCartaoService {
 
     private final CartaoWebClient cartaoWebClient;
-    static Logger log = Logger.getLogger("BloqueiaCartaoLogger");
+    public final Logger log = LoggerFactory.getLogger(BloqueiaCartaoServiceImpl.class);
 
 
     public BloqueiaCartaoServiceImpl(CartaoWebClient cartaoWebClient) {
@@ -36,10 +35,10 @@ public class BloqueiaCartaoServiceImpl implements BloqueiaCartaoService {
 
             if (response.getResultado().equals(BLOQUEADO.toString())) {
                 cartao.bloquear(userAgent, ipaddress);
-                log.log(Level.INFO, "Bloqueando cartao");
+                log.info("Bloqueando cartao");
             }
         } catch (FeignException e){
-            log.log(Level.parse("ERROR"), "Erro ao bloquear cartão");
+            log.error( "Erro ao bloquear cartão");
             throw new IntegracaoException("Não foi possível comunicar o sistema legado para bloquear cartão", cartao.getId().substring(4)+"****");
         }
 

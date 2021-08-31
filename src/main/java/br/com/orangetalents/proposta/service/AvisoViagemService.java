@@ -6,5 +6,5 @@ import br.com.orangetalents.proposta.domain.modelo.Cartao;
 
 public interface AvisoViagemService {
 
-    Aviso criarAvisoDeViagem(Cartao cartao, AvisoViagemRequest request);
+    Aviso criarAvisoDeViagem(Cartao cartao, AvisoViagemRequest request, String userAgent, String ipaddress);
 }

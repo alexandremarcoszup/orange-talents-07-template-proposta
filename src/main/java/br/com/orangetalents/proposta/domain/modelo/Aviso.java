@@ -1,6 +1,7 @@
 package br.com.orangetalents.proposta.domain.modelo;
 
 import br.com.orangetalents.proposta.controller.response.AvisoResponse;
+import br.com.orangetalents.proposta.integracao.request.AvisoViagemCartaoRequest;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -16,6 +17,10 @@ public class Aviso {
 
     private String destino;
 
+    private String userAgent;
+
+    private String ipAddress;
+
     @ManyToOne
     private Cartao cartao;
 
@@ -28,9 +33,11 @@ public class Aviso {
         this.destino = destino;
     }
 
-    public Aviso(LocalDate validoAte, String destino, Cartao cartao) {
+    public Aviso(LocalDate validoAte, String destino, String userAgent, String ipAddress, Cartao cartao) {
         this.validoAte = validoAte;
         this.destino = destino;
+        this.userAgent = userAgent;
+        this.ipAddress = ipAddress;
         this.cartao = cartao;
     }
 
@@ -38,4 +45,11 @@ public class Aviso {
         return new AvisoResponse(this.id,this .destino, this.validoAte);
     }
 
+    public AvisoViagemCartaoRequest domainToAvisoViagemCartaoRequest(){
+        return new AvisoViagemCartaoRequest(this.destino, this.validoAte);
+    }
+
+    public String getId() {
+        return id;
+    }
 }

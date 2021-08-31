@@ -1,6 +1,8 @@
 package br.com.orangetalents.proposta.integracao;
 
+import br.com.orangetalents.proposta.integracao.request.AvisoViagemCartaoRequest;
 import br.com.orangetalents.proposta.integracao.request.BloqueioCartaoRequest;
+import br.com.orangetalents.proposta.integracao.response.AvisoViagemCartaoResponse;
 import br.com.orangetalents.proposta.integracao.response.CartaoBloqueioResponseClient;
 import br.com.orangetalents.proposta.integracao.response.CartaoResponseClient;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -17,4 +19,9 @@ public interface CartaoWebClient {
 
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     CartaoResponseClient recuperaCartao(@RequestParam String idProposta);
+
+    @PostMapping(value = "/{id}/avisos", consumes = MediaType.APPLICATION_JSON_VALUE)
+    AvisoViagemCartaoResponse avisoViagemCartao(@PathVariable("id") String idCartao, @RequestBody AvisoViagemCartaoRequest avisoViagemCartaoRequest);
+
+
 }

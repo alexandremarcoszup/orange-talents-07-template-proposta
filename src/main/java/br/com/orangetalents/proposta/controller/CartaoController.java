@@ -10,6 +10,9 @@ import br.com.orangetalents.proposta.domain.repository.CartaoRepository;
 import br.com.orangetalents.proposta.security.handler.EntityNotFound;
 import br.com.orangetalents.proposta.service.AvisoViagemService;
 import br.com.orangetalents.proposta.service.BloqueiaCartaoService;
+import br.com.orangetalents.proposta.service.impl.BloqueiaCartaoServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -17,8 +20,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Base64;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/cartao")
@@ -28,7 +29,8 @@ public class CartaoController {
     private final BloqueiaCartaoService bloqueiaCartaoService;
     private final AvisoViagemService avisoViagemService;
 
-    static Logger log = Logger.getLogger("Controller de biometria");
+    public final Logger log = LoggerFactory.getLogger(BloqueiaCartaoServiceImpl.class);
+
 
     public CartaoController(CartaoRepository cartaoRepository, BloqueiaCartaoService bloqueiaCartaoService, AvisoViagemService avisoViagemService) {
         this.cartaoRepository = cartaoRepository;
@@ -43,7 +45,7 @@ public class CartaoController {
 
         Cartao cartao = findCartaoBydId(idCartao);
 
-        log.log(Level.INFO, "Cadastrando biometria");
+        log.info("Cadastrando biometria");
 
         Biometria biometria = buildBiometria(biometriaBase64, cartao);
         cartao.addBiometria(biometria);
@@ -69,12 +71,12 @@ public class CartaoController {
 
     @PostMapping("/aviso/{id}")
     public ResponseEntity<AvisoResponse> postaAvisoDeviagem(@RequestHeader("User-Agent") String userAgent,
-                                                       @RequestHeader("ipaddress") String ipaddress,
+                                                       @RequestHeader("ipaddress") String ipAddress,
                                                        @PathVariable("id") String idCartao,
                                                        @RequestBody @Valid AvisoViagemRequest avisoViagemRequest) {
 
         Cartao cartao = findCartaoBydId(idCartao);
-        Aviso aviso = avisoViagemService.criarAvisoDeViagem(cartao, avisoViagemRequest);
+        Aviso aviso = avisoViagemService.criarAvisoDeViagem(cartao, avisoViagemRequest, userAgent, ipAddress);
         cartaoRepository.save(cartao);
 
         return ResponseEntity.ok(aviso.domainToResponse());

@@ -25,8 +25,8 @@ public class AvisoViagemRequest {
         this.validoAte = validoAte;
     }
 
-    public Aviso requestToDomain(Cartao cartao){
-        return new Aviso(this.validoAte, this.destino, cartao);
+    public Aviso requestToDomain(Cartao cartao, String userAgent, String ipAddress){
+        return new Aviso(this.validoAte, this.destino, userAgent, ipAddress, cartao);
     }
 
 
