@@ -1,5 +1,6 @@
 package br.com.orangetalents.proposta.security.validations;
 
+import br.com.orangetalents.proposta.security.config.JasyptConfig;
 import br.com.orangetalents.proposta.security.handler.EntityException;
 
 import javax.persistence.EntityManager;
@@ -26,8 +27,8 @@ public class UniqueDocumentValidator implements ConstraintValidator<UniqueDocume
 
     @Override
     public boolean isValid(String document, ConstraintValidatorContext constraintValidatorContext) {
-        Query query = entityManager.createQuery("SELECT 1 FROM " + Klass.getName() + " where " + domainAttribute + "=:value");
-        query.setParameter("value", document);
+        Query query = entityManager.createQuery("SELECT 1 FROM " + Klass.getName() + " where hashCpfOrCnpj" + "=:value");
+        query.setParameter("value", new JasyptConfig().gerarHash(document));
         List<?> list = query.getResultList();
         if (list.size() >= 1)
             throw new EntityException(domainAttribute, "Foi encontrado mais de uma + " + Klass.getName() + " com o documento: " + document);

@@ -13,7 +13,7 @@ public class AssociaNovoCartaoRequest implements Serializable {
     private String idProposta;
 
     public AssociaNovoCartaoRequest(Proposta proposta) {
-        this.documento = proposta.getCpfOrCnpj();
+        this.documento = proposta.getCpfOrCnpjDescriptografado();
         this.nome = proposta.getNome();
         this.idProposta = proposta.getId().toString();
     }
