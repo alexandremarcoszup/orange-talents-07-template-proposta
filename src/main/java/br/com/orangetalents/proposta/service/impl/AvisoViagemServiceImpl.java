@@ -18,7 +18,7 @@ public class AvisoViagemServiceImpl implements AvisoViagemService {
 
     private final AvisoRepository avisoRepository;
     private final CartaoWebClient cartaoWebClient;
-    public final Logger log = LoggerFactory.getLogger(AvisoViagemServiceImpl.class);
+    public final Logger log = LoggerFactory.getLogger(Service.class);
 
 
     public AvisoViagemServiceImpl(AvisoRepository avisoRepository, CartaoWebClient cartaoWebClient) {

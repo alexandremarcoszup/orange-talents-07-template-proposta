@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class AssociaCarteiraServiceImpl implements AssociaCarteiraService {
 
     private final CartaoWebClient cartaoWebClient;
-    public final Logger log = LoggerFactory.getLogger(BloqueiaCartaoServiceImpl.class);
+    public final Logger log = LoggerFactory.getLogger(AssociaCarteiraServiceImpl.class);
 
 
     public AssociaCarteiraServiceImpl(CartaoWebClient cartaoWebClient) {

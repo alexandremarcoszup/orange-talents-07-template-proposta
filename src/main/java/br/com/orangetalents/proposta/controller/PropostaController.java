@@ -7,6 +7,8 @@ import br.com.orangetalents.proposta.domain.modelo.Proposta;
 import br.com.orangetalents.proposta.domain.repository.PropostaRepository;
 import br.com.orangetalents.proposta.security.handler.EntityNotFound;
 import br.com.orangetalents.proposta.service.AvaliacaoPropostaService;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,16 +23,23 @@ public class PropostaController {
 
     private final PropostaRepository propostaRepository;
     private final AvaliacaoPropostaService avaliacaoPropostaService;
+    private final Tracer tracer;
 
-    public PropostaController(PropostaRepository propostaRepository, AvaliacaoPropostaService avaliacaoPropostaService) {
+    public PropostaController(PropostaRepository propostaRepository, AvaliacaoPropostaService avaliacaoPropostaService, Tracer tracer) {
         this.propostaRepository = propostaRepository;
         this.avaliacaoPropostaService = avaliacaoPropostaService;
+        this.tracer = tracer;
     }
 
     @PostMapping
     public ResponseEntity<PropostaResponse> criaProposta(UriComponentsBuilder uriBuilder, @RequestBody @Valid PropostaRequest propostaRequest) {
 
         Proposta proposta = propostaRepository.save(propostaRequest.toDomain());
+        Span activeSpan = tracer.activeSpan();
+        activeSpan.log("Aqui jás a criação de uma proposta.");
+
+        activeSpan.setTag("operation.status", "success");
+        activeSpan.setBaggageItem("proposta.id", proposta.getId().toString());
 
         URI uri = uriBuilder.path("proposta/{id}").buildAndExpand(proposta.getId()).toUri();
         return ResponseEntity.created(uri).body(proposta.toResponse());

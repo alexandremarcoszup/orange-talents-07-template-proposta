@@ -17,7 +17,7 @@ public class AvaliacaoPropostaServiceImpl implements AvaliacaoPropostaService {
 
     private final AvaliaSolicitanteWebClient avaliaSolicitanteWebClient;
 
-    public final Logger log = LoggerFactory.getLogger(BloqueiaCartaoServiceImpl.class);
+    public final Logger log = LoggerFactory.getLogger(AvaliacaoPropostaServiceImpl.class);
 
 
     public AvaliacaoPropostaServiceImpl(AvaliaSolicitanteWebClient avaliaSolicitanteWebClient) {

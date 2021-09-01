@@ -23,7 +23,7 @@ public class AssociaCartaoServiceImpl implements AssociaCartaoService {
 
     private final PropostaRepository propostaRepository;
     private final CartaoWebClient cartaoWebClient;
-    public final Logger log = LoggerFactory.getLogger(BloqueiaCartaoServiceImpl.class);
+    public final Logger log = LoggerFactory.getLogger(AssociaCartaoServiceImpl.class);
 
 
     public AssociaCartaoServiceImpl(PropostaRepository propostaRepository, CartaoWebClient cartaoWebClient) {

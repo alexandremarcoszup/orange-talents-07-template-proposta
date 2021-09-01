@@ -13,7 +13,6 @@ import br.com.orangetalents.proposta.security.handler.EntityNotFound;
 import br.com.orangetalents.proposta.service.AssociaCarteiraService;
 import br.com.orangetalents.proposta.service.AvisoViagemService;
 import br.com.orangetalents.proposta.service.BloqueiaCartaoService;
-import br.com.orangetalents.proposta.service.impl.BloqueiaCartaoServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,7 @@ public class CartaoController {
     private final AvisoViagemService avisoViagemService;
     private final AssociaCarteiraService associaCarteiraService;
 
-    public final Logger log = LoggerFactory.getLogger(BloqueiaCartaoServiceImpl.class);
+    public final Logger log = LoggerFactory.getLogger(CartaoController.class);
 
 
     public CartaoController(CartaoRepository cartaoRepository, BloqueiaCartaoService bloqueiaCartaoService, AvisoViagemService avisoViagemService, AssociaCarteiraService associaCarteiraService) {
